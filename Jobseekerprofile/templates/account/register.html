@@ -1,0 +1,37 @@
+{% extends "jobseeker/base.html" %}
+{% load socialaccount %}
+{% load static %}
+{% block title %}Register{% endblock title %}Register
+
+{% block content %}
+<div class="container mt-5" style="width:600px;">
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert 
+            {% if message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'success' %}alert-success
+            {% else %}alert-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <h1>Register</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="mb-3 mt-5">
+            {{form.as_p}}
+        </div>
+        <div class="d-grid gap-2 mt-5">
+            <button class="btn btn-info text-white" type="submit">Email me a sign in code</button>
+        </div>
+        <div class="d-grid gap-2 mt-5">
+            <a href="{% provider_login_url 'google' %}" class="btn btn-success text-white">Continue Via Google</a>
+        </div>
+        <div class="d-grid gap-2 mt-5">
+        <p>Already have an account?</p><a href="{% url "jobseekersiginpage" 'job_seeker' %}">SigIn</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

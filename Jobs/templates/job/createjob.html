@@ -1,0 +1,27 @@
+{% extends "employer/base.html" %}
+{% block content %}
+<div class="container" style="width: 800px;">
+
+    
+    {% if messages %}
+    {% for message in messages %}
+    <h5>{{message}}</h5>
+    {% endfor %}
+    {% endif %}
+    {% if pending_activation %}
+    <p>Pending Activate - Please check your email.</p>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    {{request.user.username}}
+    
+    {% endif %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" >CreateJob</button>
+    </form>
+
+</div>
+
+{% endblock content %}

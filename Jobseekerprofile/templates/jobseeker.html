@@ -1,0 +1,8 @@
+{% extends "jobseeker/base.html" %}
+{% block content %}
+<div class="container">
+    {% if request.user.is_authenticated %}
+    <h5>{{request.user.username}}--{{request.user.role}}</h5>
+{% endif %}
+</div>
+{% endblock content %}

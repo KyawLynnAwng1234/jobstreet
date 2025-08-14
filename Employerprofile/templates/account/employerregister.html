@@ -1,0 +1,64 @@
+{% extends "employer/base.html" %}
+{% load static %}
+{% block content %}
+<div class="form-container">
+  <h4 class="form-title">Your employer account</h4>
+  <p class="text-muted">You're almost done! We need some details about your business to verify your account. We won’t share your details with anyone.</p>
+
+  <hr>
+
+  <form method="POST">
+    {% csrf_token %}
+    <h6 class="mt-4">Your details</h6>
+    <p class="text-muted">We need a real name to verify your account.</p>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" value="{{email}}" disabled>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">First name</label>
+        <input type="text" class="form-control" placeholder="Your first name" name="first_name">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Last name</label>
+        <input type="text" class="form-control" placeholder="Your last name" name="last_name">
+      </div>
+    </div>
+
+    <h6 class="mt-4">Business Details</h6>
+
+    <div class="mb-3">
+      <label class="form-label">Business name</label>
+      <input type="text" class="form-control" placeholder="Your company name" name="business_name">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">City</label>
+      <select class="form-select" name="city">
+        <option selected>MraukOo</option>
+        <option>MinBra</option>
+        <option>Sittway</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="number" id="myIntegerInput" name="phone_number">
+    </div>
+      <small class="form-text text-muted">We might need to contact you. This is never shared with candidates.</small>
+    </div>
+
+    <button type="submit" class="btn btn-pink mt-3">Create new account</button>
+  </form>
+
+  <p class="mt-4 text-center">
+    Looking for a job? Visit <a href="#">SEEK job search</a>
+  </p>
+</div>
+{% endblock content %}
+
+
