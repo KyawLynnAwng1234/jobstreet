@@ -10,6 +10,7 @@ from Jobseekerprofile.forms import jobseekerRegisterForm,jobseekerSiginForm
 from Jobseekerprofile.utils import send_verification_code
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model, login,logout
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -52,7 +53,7 @@ def register_jobseeker_api(request,role):
 #end job-seeker-register
 
 #job-seeker-email-verify 
-
+@csrf_exempt
 @api_view(['POST'])
 def email_verify_jobseeker_api(request):
     input_code = request.data.get('code')
