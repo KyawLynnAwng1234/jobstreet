@@ -5,9 +5,11 @@ import Home from './pages/Home'
 import JobSearch from './pages/JobSearch'
 import Profile from './pages/Profile'
 
+// Auth JobSeeker
 import SignIn from './pages/jobseeker/SignIn'
 import Register from './pages/jobseeker/Register'
 import VerifyOTP from './pages/jobseeker/VerifyOTP'
+import ProfileMe from './pages/signprofile/ProfileMe'
 // import JobRegister from './components/auth/RegisterJobseeker'
 // import JobSignin from './components/auth/SigninJobseeker.jsx'
 // import Verify from './components/auth/VerifyJobseeker.jsx'
@@ -22,6 +24,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path='job-search' element={<JobSearch />} />
           <Route path='profile' element={<Profile />} />
+
+          {/* Auth Jobseeker */}
+          <Route path='profile/me' element={<ProfileMe />} />
         </Route>
 
         {/* Jobseeker Auth */}

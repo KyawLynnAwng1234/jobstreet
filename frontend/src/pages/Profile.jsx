@@ -7,7 +7,7 @@ export default function Profile() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[#002366] to-[#003AB3] text-white py-8 mt-13 md:mt-15">
+      <section className="bg-gradient-to-r from-[#002366] to-[#003AB3] text-white py-8">
         <div className="container mx-auto px-4 h-[300px]">
           <div className="flex flex-col w-full h-full justify-center items-start">
             <h1 className="text-3xl font-bold mb-2 text-[#ffffffcf]">Create Your Profile</h1>

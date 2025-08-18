@@ -112,7 +112,7 @@ const VerifyOTP = () => {
       }
 
       // Profile create page သို့ redirect
-      navigate("/profile/create-profile");
+      navigate("/profile/me");
     } catch (err) {
       setMessage(err.response?.data?.error || "Verification failed");
     } finally {
