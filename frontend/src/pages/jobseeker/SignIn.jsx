@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 
 // This is the main component for the Sign In page.
 // It handles user input for email, calls a backend API to send a sign-in code,
@@ -78,10 +78,14 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header section with the brand name */}
-      <header className="h-16 flex items-center px-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-blue-900 select-none">
-          Jobseeker
-        </h1>
+      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          {/* Logo */}
+          <NavLink to="/" className="text-2xl font-bold text-blue-600">
+            Jobseeker
+          </NavLink>
+
+        </div>
       </header>
 
       {/* Main content area containing the sign-in form */}
