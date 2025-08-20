@@ -5,7 +5,7 @@ import QuickSearchSection from "./homepage/QuickSearchSection";
 
 export default function Home() {
   const navigateCompany = useNavigate();
-  const navigateJobs = useNavigate();
+  const navigateJobs= useNavigate();
 
   const dummyJobs = Array(6).fill({
     title: "Project Manager",
