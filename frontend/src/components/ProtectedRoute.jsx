@@ -9,5 +9,7 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/sign-in" replace />;
   }
 
+
+
   return children;
 }

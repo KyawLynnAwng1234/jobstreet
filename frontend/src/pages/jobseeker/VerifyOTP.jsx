@@ -30,6 +30,12 @@ const VerifyOTP = () => {
   const email = location.state?.email || "";
   const inputsRef = useRef([]);
 
+  useEffect(() => {
+    if(!email) {
+      navigate("/sign-in");
+    }
+  }, [email, navigate])
+
   const handleChange = (value, index) => {
     if (value.length > 1) return;
     if (value && !/^\d$/.test(value)) return;
