@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
@@ -18,14 +17,15 @@ function getCookie(name) {
   return cookieValue;
 }
 
-// This component handles the email verification process.
+// ✅ Env variable ထဲက API URL ကို ယူ
+const API_URL = import.meta.env.VITE_API_URL;
+
 const VerifyOTP = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const email = location.state?.email || "";
   const inputsRef = useRef([]);
@@ -70,9 +70,6 @@ const VerifyOTP = () => {
   const handleVerify = async () => {
     const otp = code.join("");
 
-    console.log(code);
-    console.log(otp);
-
     if (otp.length < 6) {
       setMessage("Please enter the 6-digit code.");
       return;
@@ -83,35 +80,25 @@ const VerifyOTP = () => {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/email-verify-jobseeker/",
+        `${API_URL}/email-verify-jobseeker/`, // ✅ Env ထဲက API ကို ခေါ်
         { code: otp },
         {
-          withCredentials: true, // 👈 send cookies (csrftoken, sessionid)
+          withCredentials: true,
           headers: {
-            "X-CSRFToken": getCookie("csrftoken"), // also include CSRF token
+            "X-CSRFToken": getCookie("csrftoken"),
           },
         }
-        
       );
-
-      
-
-      
 
       setMessage("Verification successful!");
 
-      // Backend က response ထဲမှာ name နဲ့ token ထွက်လာမယ်လို့ ယူဆ
       const { token, name } = res.data;
-
-      // Token သိမ်း
       localStorage.setItem("token", token || "mock-auth-token-12345");
 
-      // Gmail display name သိမ်း
       if (name) {
         localStorage.setItem("displayName", name);
       }
 
-      // Profile create page သို့ redirect
       navigate("/profile/me");
     } catch (err) {
       setMessage(err.response?.data?.error || "Verification failed");
@@ -120,7 +107,6 @@ const VerifyOTP = () => {
     }
   };
 
-  // message ကို ၅ စက္ကန့်ပြီးရင် ဖျောက်ဖို့
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => setMessage(""), 5000);
@@ -147,7 +133,6 @@ const VerifyOTP = () => {
             {code.map((digit, index) => (
               <input
                 key={index}
-                id={`code-${index}`}
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"

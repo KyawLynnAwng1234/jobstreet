@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import useAuth from "../hooks/useAuth";
 
 export default function Profile() {
+  const { userEmail } = useAuth();
   const navigate = useNavigate();
+
+  // ✅ User already signed in, redirect to dashboard or profile page
+  useEffect(() => {
+    if (userEmail) {
+      navigate("/profile-me"); // သင့်ရဲ့ main profile/dashboard route
+    }
+  }, [userEmail, navigate]);
+
+  // userEmail ရှိနေပါက rendering မလုပ်ဘဲ return null
+  if (userEmail) return null;
+
   return (
     <div>
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-[#002366] to-[#003AB3] text-white py-8">
         <div className="container mx-auto px-4 h-[300px]">
           <div className="flex flex-col w-full h-full justify-center items-start">
-            <h1 className="text-3xl font-bold mb-2 text-[#ffffffcf]">Create Your Profile</h1>
+            <h1 className="text-3xl font-bold mb-2 text-[#ffffffcf]">
+              Create Your Profile
+            </h1>
             <p className="mb-6 text-[#ffffffcf]">
               You can create for jobs from any company you like.
             </p>
             <button
-              onClick={() => navigate('/sign-in')}
+              onClick={() => navigate("/sign-in")}
               className="bg-[#C46210] hover:bg-[#AB4812] text-[#ffffffcf] font-semibold px-6 py-3 rounded inline-block"
             >
               Create Profile
