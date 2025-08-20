@@ -1,21 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 
 export default function Profile() {
-  const { userEmail } = useAuth();
   const navigate = useNavigate();
-
-  // ✅ User already signed in, redirect to dashboard or profile page
-  useEffect(() => {
-    if (userEmail) {
-      navigate("/profile-me"); // သင့်ရဲ့ main profile/dashboard route
-    }
-  }, [userEmail, navigate]);
-
-  // userEmail ရှိနေပါက rendering မလုပ်ဘဲ return null
-  if (userEmail) return null;
-
   return (
     <div>
       {/* Hero Section */}

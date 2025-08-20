@@ -3,15 +3,19 @@ import axios from "axios";
 import { CiMail } from "react-icons/ci";
 import { FaLocationDot } from "react-icons/fa6";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export default function ProfileMe() {
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [profile, setProfile] = useState({
+    name: "",
+    location: "",
+    email: "",
+  });
 
   const sections = [
-    { title: "Education", desc: "Tell us about your education level", btn: "Education" },
+    {
+      title: "Education",
+      desc: "Tell us about your education level",
+      btn: "Education",
+    },
     { title: "Certifications", btn: "Certifications" },
     { title: "Skills", btn: "Your Skills" },
     { title: "Language", btn: "Proficient language" },
@@ -19,33 +23,14 @@ export default function ProfileMe() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/profile/`, { withCredentials: true })
+      .get("http://127.0.0.1:8000/api/profile/", { withCredentials: true })
       .then((res) => {
         setProfile(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching profile:", err);
-        setError("Failed to load profile. Please try again.");
-        setLoading(false);
       });
   }, []);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-[400px]">
-        <p className="text-gray-500">Loading profile...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-[400px]">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -54,17 +39,21 @@ export default function ProfileMe() {
         <div className="container mx-auto px-4 h-[300px]">
           <div className="flex flex-col w-full h-full justify-center items-start">
             <h1 className="text-3xl font-bold mb-2 text-[#ffffffcf]">
-              {profile?.name || "Profile Name"}
+              {profile.name || "Profile Name"}
             </h1>
             <div className="flex justify-center items-center space-x-2 py-1">
               <FaLocationDot />
-              <p className="text-[#ffffffcf]">{profile?.location || "Location"}</p>
+              <p className="text-[#ffffffcf]">
+                {profile.location || "Location"}
+              </p>
             </div>
             <div className="flex justify-center items-center space-x-2 py-1">
               <CiMail />
-              <p className="text-[#ffffffcf]">{profile?.email || "user@gmail.com"}</p>
+              <p className="text-[#ffffffcf]">
+                {profile.email || "user@gmail.com"}
+              </p>
             </div>
-            <button className="border rounded-xl px-4 py-2 my-4 text-[#ffffffcf] hover:bg-[#ffffff22]">
+            <button className="border rounded-xl p-1.5 my-4 text-[#ffffffcf]">
               Edit Profile
             </button>
           </div>
