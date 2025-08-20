@@ -38,7 +38,7 @@ const Register = () => {
     setMessage("");
 
     try {
-      const res = await fetch(`${API_URL}/register-jobseeker/job_seeker/`, {
+      const res = await fetch(`${API_URL}/register-jobseeker/job_seeker/`,{
         method: "POST",
         credentials: "include",
         headers: {
