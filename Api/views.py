@@ -1,6 +1,7 @@
 
 # Create your views here.
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError
@@ -9,13 +10,9 @@ from django.utils.crypto import get_random_string
 from Jobseekerprofile.forms import jobseekerRegisterForm,jobseekerSiginForm
 from Jobseekerprofile.utils import send_verification_code
 from rest_framework.response import Response
-from django.contrib.auth import get_user_model, login,logout
-from django.views.decorators.csrf import csrf_exempt
-
-
+from django.contrib.auth import get_user_model,login,logout
 
 User = get_user_model()
-
 
 #job-seeker-register
 @api_view(['POST'])
@@ -25,11 +22,10 @@ def register_jobseeker_api(request,role):
         email = form.cleaned_data['email']
         code = send_verification_code(email)
         request.session['verification_code'] = code
-        
         request.session['email'] = email
         username = email.split('@')[0]
         random_password = get_random_string(length=6)
-
+        
         if not username:
             return Response({"error": "Please enter your email"},status=status.HTTP_400_BAD_REQUEST)
 
@@ -53,7 +49,7 @@ def register_jobseeker_api(request,role):
 #end job-seeker-register
 
 #job-seeker-email-verify 
-@csrf_exempt
+
 @api_view(['POST'])
 def email_verify_jobseeker_api(request):
     input_code = request.data.get('code')
@@ -139,10 +135,30 @@ def sigin_jobseeker_api(request, role):
 
 
 @api_view(['POST'])
-
 def sigout_jobseeker_api(request):
     logout(request)
-    return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+    return Response({"message": "Logged out successfully"},status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def profile_jobseeker_api(request):
+    user=request.user
+    
+    return Response({
+        "username":user.username,
+        "email":user.email,
+    })
+    
+    
+@api_view(['GET'])
+def current_user(request):
+    if request.user.is_authenticated:
+        return Response({
+            "username": request.user.username,
+            "email": request.user.email,
+        })
+    return Response({"username": None, "email": None})
+        
 
 
         

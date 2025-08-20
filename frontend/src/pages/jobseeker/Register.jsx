@@ -1,74 +1,15 @@
-
-
 import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
-import { Link, useNavigate, NavLink } from "react-router-dom";
-
-// ✅ Env variable ထဲက API URL ကို ယူ
-const API_URL = import.meta.env.VITE_API_URL;
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const { loading, message, register } = useAuth();
   const navigate = useNavigate();
-
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + "=")) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  const handleRegister = async () => {
-    if (!email) {
-      setMessage("Please enter your email.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await fetch(`${API_URL}/register-jobseeker/job_seeker/`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-      }
-
-      const data = await res.json();
-      console.log(data);
-      setMessage("Sign-in code sent to your email!");
-
-      // ✅ OTP page သို့ သွားမယ်
-      navigate("/verify", { state: { email } });
-    } catch (err) {
-      console.error(err);
-      setMessage("Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
       <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <NavLink to="/" className="text-2xl font-bold text-blue-600">
@@ -77,7 +18,6 @@ const Register = () => {
         </div>
       </header>
 
-      {/* Main Form */}
       <main className="flex-grow flex justify-center items-center px-4">
         <div className="bg-blue-50 rounded-lg p-8 w-full max-w-md shadow-md">
           <p className="text-center text-sm mb-1">
@@ -101,7 +41,7 @@ const Register = () => {
           />
 
           <button
-            onClick={handleRegister}
+            onClick={() => register(email, navigate)}
             disabled={loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
           >
@@ -112,6 +52,7 @@ const Register = () => {
             <p className="mt-3 text-center text-sm text-red-600">{message}</p>
           )}
 
+          {/* Social Buttons */}
           <div className="flex items-center my-6 text-sm text-gray-600">
             <hr className="flex-grow border-gray-300" />
             <span className="mx-3 whitespace-nowrap">
@@ -174,4 +115,4 @@ const Register = () => {
   );
 };
 
-export default Register; 
+export default Register;

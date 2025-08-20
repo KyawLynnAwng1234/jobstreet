@@ -12,26 +12,31 @@ import VerifyOTP from "./pages/jobseeker/VerifyOTP";
 import Companies from "./pages/Companies";
 import ProfileMe from "./pages/signinprofile/ProfileMe";
 
+// ✅ Auth Context import
+import { AuthProvider } from "./context/AuthContext";
+
 function App() {
   return (
     // ✅ Wrap whole app with AuthProvider
 
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="job-search" element={<JobSearch />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="companies" element={<Companies />} />
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="job-search" element={<JobSearch />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="companies" element={<Companies />} />
 
-        {/* ✅ ProfileMe ကို login ဝင်မှသာ ရမယ် */}
-        <Route path="profile/me" element={<ProfileMe />} />
-      </Route>
+          {/* ✅ ProfileMe ကို login ဝင်မှသာ ရမယ် */}
+          <Route path="profile/me" element={<ProfileMe />} />
+        </Route>
 
-      {/* Jobseeker Auth */}
-      <Route path="sign-in" element={<SignIn />} />
-      <Route path="register" element={<Register />} />
-      <Route path="verify" element={<VerifyOTP />} />
-    </Routes>
+        {/* Jobseeker Auth */}
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="register" element={<Register />} />
+        <Route path="verify" element={<VerifyOTP />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

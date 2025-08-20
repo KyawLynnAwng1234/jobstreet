@@ -6,7 +6,7 @@ import { FaLocationDot } from "react-icons/fa6";
 export default function ProfileMe() {
   const [profile, setProfile]= useState({
     name: "",
-    location: "",
+    location: "", 
     email: "",
   });
 
