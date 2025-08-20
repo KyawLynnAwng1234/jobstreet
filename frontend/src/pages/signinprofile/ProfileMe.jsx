@@ -4,7 +4,7 @@ import { CiMail } from "react-icons/ci";
 import { FaLocationDot } from "react-icons/fa6";
 
 export default function ProfileMe() {
-  const [profile, setProfile] = useState({
+  const [profile, setProfile]= useState({
     name: "",
     location: "",
     email: "",
