@@ -15,10 +15,12 @@ export default function Navbar() {
       try {
         const token = localStorage.getItem("token");
         if (token) {
-          const res = await axios.get("http://localhost:8000/api/auth/user/", {
+          const res = await axios.get(`${API_URL}/current-user/`, {
             headers: {
-              Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
+             
             },
+             withCredentials: true,
           });
           setUser(res.data); // backend ကပြန်လာတဲ့ user data
         }
