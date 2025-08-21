@@ -46,7 +46,7 @@ const VerifyOTP = () => {
 
   const handleVerifyClick = () => {
     const otp = code.join("");
-    verifyOTP(email, otp, navigate);
+    verifyOTP(email, otp,);
   };
 
   return (

@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ✅ Verify OTP
-  const verifyOTP = async (otp, email) => {
+  const verifyOTP = async (email, otp) => {
     if (otp.length !== 6) {
       setMessage("Enter the 6-digit code.");
       return false;
@@ -113,11 +113,17 @@ export const AuthProvider = ({ children }) => {
       );
 
       const { token, name } = res.data;
-      localStorage.setItem("token", token || "mock-auth-token-12345");
-      if (name) setUser({ name, email });
+
+      // token သိမ်း
+      localStorage.setItem("token", token);
+
+      // ✅ user ကို update လုပ်
+      setUser({ name: name || "Job Seeker", email });
 
       setMessage("Verification successful!");
-      navigate("/profile/me");
+
+      // redirect to profile
+      navigate("/profile/me", { replace: true });
       return true;
     } catch (err) {
       console.error(err);
