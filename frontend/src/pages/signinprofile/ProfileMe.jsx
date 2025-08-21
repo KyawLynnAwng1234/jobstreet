@@ -20,8 +20,8 @@ export default function ProfileMe() {
 
   // ✅ Login check
   useEffect(() => {
-    if (!user || !user.token) {
-      navigate("/sign-in");
+    if (!user) {
+      navigate("/sign-in", {replace:true});
     } else {
       axios
         .get(`${import.meta.env.VITE_API_URL}/profile/`, { withCredentials: true })
