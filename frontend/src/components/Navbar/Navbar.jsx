@@ -22,6 +22,7 @@ export default function Navbar() {
             },
              withCredentials: true,
           });
+          console.log("Current user API response:", res.data);
           setUser(res.data); // backend ကပြန်လာတဲ့ user data
         }
       } catch (err) {
@@ -35,7 +36,7 @@ export default function Navbar() {
   // Logout
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8000/api/auth/logout/");
+      await axios.post(`${API_URL}/logout-jobseeker/`);
     } catch (err) {
       console.error("Logout error:", err);
     }
@@ -111,7 +112,7 @@ export default function Navbar() {
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                     className="text-blue-600 font-semibold flex items-center gap-1 focus:outline-none"
                   >
-                    {user.name || "AC Name"} ▼
+                    {user.name ||user.username || user || "AC Name"} ▼
                   </button>
 
                   {dropdownOpen && (
