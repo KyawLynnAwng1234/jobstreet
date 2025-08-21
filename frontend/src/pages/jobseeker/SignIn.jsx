@@ -1,69 +1,12 @@
-
-
 import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const { loading, message, signIn } = useAuth();
   const navigate = useNavigate();
-
-  // get cookie (for CSRF if needed)
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let cookie of cookies) {
-        cookie = cookie.trim();
-        if (cookie.startsWith(name + "=")) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-
-  const handleSignIn = async () => {
-    if (!email) {
-      setMessage("Please enter your email address.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      // API base URL from .env
-      const API_URL = import.meta.env.VITE_API_URL;
-
-      const res = await fetch(`${API_URL}/signin-jobseeker/job-seeker/`, {
-        method: "POST",
-        credentials: "include", // send cookies
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCookie("csrftoken"),
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-      }
-
-      const data = await res.json();
-      console.log(data);
-      setMessage("Sign-in code sent to your email!");
-      navigate("/verify", { state: { email } });
-    } catch (err) {
-      console.error(err);
-      setMessage("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -99,16 +42,13 @@ const SignIn = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email Address"
-            className="w-full mb-5 px-4 py-2 border border-gray-300 rounded-lg 
-                       focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+            className="w-full mb-5 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
           />
 
           <button
-            onClick={handleSignIn}
+            onClick={() => signIn(email, navigate)}
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-medium 
-                       hover:bg-blue-700 transition-colors disabled:opacity-50 
-                       disabled:cursor-not-allowed shadow-lg"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
             {loading ? "Sending..." : "Email me sign in code"}
           </button>
@@ -123,6 +63,7 @@ const SignIn = () => {
             </p>
           )}
 
+          {/* Social buttons, Google & Facebook */}
           <div className="flex items-center my-6 text-sm text-gray-600">
             <hr className="flex-grow border-gray-300" />
             <span className="mx-3 whitespace-nowrap">
@@ -183,12 +124,12 @@ const SignIn = () => {
               Register
             </Link>
           </p>
+          
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="h-12 flex items-center justify-center border-t border-gray-200 
-                         text-sm text-gray-500">
+      <footer className="h-12 flex items-center justify-center border-t border-gray-200 text-sm text-gray-500">
         © 2023 Copyright: Jobstreet .com
       </footer>
     </div>

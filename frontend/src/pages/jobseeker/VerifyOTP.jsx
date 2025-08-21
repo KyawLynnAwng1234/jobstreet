@@ -1,52 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let cookie of cookies) {
-      cookie = cookie.trim();
-      if (cookie.startsWith(name + "=")) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
-// ✅ Env variable ထဲက API URL ကို ယူ
-const API_URL = import.meta.env.VITE_API_URL;
+import { useAuth } from "../../context/AuthContext";
 
 const VerifyOTP = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const { loading, message, verifyOTP } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
   const email = location.state?.email || "";
+
   const inputsRef = useRef([]);
 
   useEffect(() => {
-    if(!email) {
-      navigate("/sign-in");
-    }
-  }, [email, navigate])
+    if (!email) navigate("/sign-in");
+  }, [email, navigate]);
 
   const handleChange = (value, index) => {
     if (value.length > 1) return;
     if (value && !/^\d$/.test(value)) return;
-
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
-
-    if (value && index < 5) {
-      inputsRef.current[index + 1].focus();
-    }
+    if (value && index < 5) inputsRef.current[index + 1].focus();
   };
 
   const handleKeyDown = (e, index) => {
@@ -62,81 +37,31 @@ const VerifyOTP = () => {
       const pasteArr = paste.split("");
       setCode((prev) => {
         const newCode = [...prev];
-        for (let i = 0; i < pasteArr.length; i++) {
-          newCode[i] = pasteArr[i];
-        }
+        for (let i = 0; i < pasteArr.length; i++) newCode[i] = pasteArr[i];
         return newCode;
       });
-      if (paste.length < 6) {
-        inputsRef.current[paste.length]?.focus();
-      }
+      if (paste.length < 6) inputsRef.current[paste.length]?.focus();
     }
   };
 
-  const handleVerify = async () => {
+  const handleVerifyClick = () => {
     const otp = code.join("");
-
-    if (otp.length < 6) {
-      setMessage("Please enter the 6-digit code.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await axios.post(
-        `${API_URL}/email-verify-jobseeker/`, // ✅ Env ထဲက API ကို ခေါ်
-        { code: otp },
-        {
-          withCredentials: true,
-          headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
-          },
-        }
-      );
-
-      setMessage("Verification successful!");
-
-      const { token, name } = res.data;
-      localStorage.setItem("token", token || "mock-auth-token-12345");
-
-      if (name) {
-        localStorage.setItem("displayName", name);
-      }
-
-      navigate("/profile/me");
-    } catch (err) {
-      setMessage(err.response?.data?.error || "Verification failed");
-    } finally {
-      setLoading(false);
-    }
+    verifyOTP(email, otp, navigate);
   };
-
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => setMessage(""), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-[Inter]">
       <header className="h-16 flex items-center px-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-blue-900 select-none">
-          Jobseeker
-        </h1>
+        <h1 className="text-2xl font-bold text-blue-900 select-none">Jobseeker</h1>
       </header>
 
       <main className="flex-grow flex justify-center items-center px-4">
         <div className="bg-blue-50 rounded-xl p-8 w-full max-w-md shadow-md text-center">
           <p className="mb-4">Check Your email for a code</p>
-          <p className="mb-6 text-sm">
-            Enter the 6-digit code we sent to {email || "your email"}
-          </p>
+          <p className="mb-6 text-sm">Enter the 6-digit code we sent to {email || "your email"}</p>
 
           <div className="flex justify-center gap-2 mb-6">
-            {code.map((digit, index) => (
+            {code.map((digit, index) =>(
               <input
                 key={index}
                 type="text"
@@ -157,7 +82,7 @@ const VerifyOTP = () => {
           </div>
 
           <button
-            onClick={handleVerify}
+            onClick={handleVerifyClick}
             disabled={loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
@@ -165,13 +90,7 @@ const VerifyOTP = () => {
           </button>
 
           {message && (
-            <p
-              className={`mt-3 text-sm ${
-                message.includes("successful")
-                  ? "text-green-600"
-                  : "text-red-600"
-              }`}
-            >
+            <p className={`mt-3 text-sm ${message.includes("successful") ? "text-green-600" : "text-red-600"}`}>
               {message}
             </p>
           )}
