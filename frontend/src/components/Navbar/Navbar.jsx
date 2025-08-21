@@ -8,6 +8,7 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const API_URL= import.meta.env.VITE_API_URL;
 
   // Backend မှ login user စစ်မယ်
   useEffect(() => {
