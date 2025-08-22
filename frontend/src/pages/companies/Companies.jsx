@@ -1,4 +1,4 @@
-// src/pages/Companies.jsx
+// src/pages/companies/Companies.jsx
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -101,7 +101,7 @@ const Companies = () => {
               key={company.id}
               className="border rounded-lg p-4 text-center shadow-sm hover:shadow-md transition"
             >
-              <Link to="/companies/company-about">
+              <Link to="/companies/about">
                 <img
                   src="/logo.png"
                   alt={company.name}

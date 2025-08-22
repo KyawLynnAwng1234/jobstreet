@@ -21,12 +21,12 @@ const SignIn = () => {
 
       {/* Main */}
       <main className="flex-grow flex justify-center items-center px-4">
-        <div className="bg-blue-50 rounded-lg p-8 w-full max-w-md shadow-md">
+        <div className="bg-blue-50 rounded-lg py-15 px-8 w-full max-w-xl shadow-md">
           <p className="text-center text-sm mb-1">
             Are you looking for an{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="/employer/sign-in" className="text-blue-600 hover:underline">
               employer?
-            </a>
+            </Link>
           </p>
           <h2 className="text-center text-3xl font-extrabold mb-6">Sign In</h2>
 
@@ -67,7 +67,7 @@ const SignIn = () => {
           <div className="flex items-center my-6 text-sm text-gray-600">
             <hr className="flex-grow border-gray-300" />
             <span className="mx-3 whitespace-nowrap">
-              Or continue with
+              Or another continue With
             </span>
             <hr className="flex-grow border-gray-300" />
           </div>

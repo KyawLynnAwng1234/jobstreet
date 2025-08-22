@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // If the user exists, redirect.
+  useEffect(() => {
+    if(user) {
+      navigate("/profile/me"); //အလိုအလျောက် homepage သို့ ပြန်ပို့မယ်
+    }
+  }, [user, navigate]);
+
   return (
     <div>
       {/* Hero Section */}

@@ -19,7 +19,7 @@ const Register = () => {
       </header>
 
       <main className="flex-grow flex justify-center items-center px-4">
-        <div className="bg-blue-50 rounded-lg p-8 w-full max-w-md shadow-md">
+        <div className="bg-blue-50 rounded-lg py-15 px-8 w-full max-w-xl shadow-md">
           <p className="text-center text-sm mb-1">
             Are you looking for an{" "}
             <a href="#" className="text-blue-600 hover:underline">
@@ -100,9 +100,12 @@ const Register = () => {
 
           <p className="mt-6 text-center text-sm text-gray-700">
             Already have{" "}
-            <span className="text-gray-900 font-semibold">your</span> account ?{" "}
-            <Link to="/sign-in" className="text-blue-600 hover:underline">
-              Sign In
+            <span className="text-gray-900 font-semibold">your</span> account?{" "}
+            <Link
+              to="/sign-in"
+              className="text-blue-600 hover:underline font-semibold"
+            >
+              SignIn
             </Link>
           </p>
         </div>

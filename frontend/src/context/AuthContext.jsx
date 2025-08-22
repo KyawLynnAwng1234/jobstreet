@@ -95,7 +95,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ✅ Verify OTP
-  const verifyOTP = async (email, otp) => {
+
+  const verifyOTP = async (email, otp) =>{
+
     if (otp.length !== 6) {
       setMessage("Enter the 6-digit code.");
       return false;
@@ -122,11 +124,12 @@ export const AuthProvider = ({ children }) => {
 
       setMessage("Verification successful!");
 
-      // redirect to profile
-      navigate("/profile/me", { replace: true });
+      navigate("/profile/me", {replace : true});
+
       return true;
     } catch (err) {
       console.error(err);
+      setUser(res.data.user);
       setMessage(err.response?.data?.error || "Verification failed.");
       return false;
     } finally {
