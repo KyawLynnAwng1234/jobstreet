@@ -61,7 +61,7 @@ const VerifyOTP = () => {
           <p className="mb-6 text-sm">Enter the 6-digit code we sent to {email || "your email"}</p>
 
           <div className="flex justify-center gap-2 mb-6">
-            {code.map((digit, index) => (
+            {code.map((digit, index) =>(
               <input
                 key={index}
                 type="text"
